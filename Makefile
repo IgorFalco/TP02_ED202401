@@ -11,8 +11,8 @@ SRC = src
 OBJ = obj
 INC = include
 BIN = bin
-OBJS = $(OBJ)/tp02.o $(OBJ)/grafo_lista.o $(OBJ)/lista.o $(OBJ)/grafo_matrix.o $(OBJ)/matrix.o
-HEADERS = $(INC)/grafo_lista.hpp $(INC)/grafo_matrix.hpp $(INC)/lista.hpp $(INC)/matrix.hpp
+OBJS = $(OBJ)/tp02.o $(OBJ)/grafoLista.o $(OBJ)/lista.o $(OBJ)/grafo_matrix.o $(OBJ)/matrix.o
+HEADERS = $(INC)/grafoLista.hpp $(INC)/grafo_matrix.hpp $(INC)/lista.hpp $(INC)/matrix.hpp
 CFLAGS = -Wall -c -g -I $(INC)
 
 EXE = $(BIN)/tp02$(EXE_EXT)
@@ -23,8 +23,8 @@ $(BIN)/tp02$(EXE_EXT): $(OBJS)
 $(OBJ)/tp02.o: $(HEADERS) $(SRC)/tp02.cpp
 	$(CC) $(CFLAGS) -o $(OBJ)/tp02.o $(SRC)/tp02.cpp
 
-$(OBJ)/grafo_lista.o: $(HEADERS) $(SRC)/grafo_lista.cpp
-	$(CC) $(CFLAGS) -o $(OBJ)/grafo_lista.o $(SRC)/grafo_lista.cpp
+$(OBJ)/grafoLista.o: $(HEADERS) $(SRC)/grafoLista.cpp
+	$(CC) $(CFLAGS) -o $(OBJ)/grafoLista.o $(SRC)/grafoLista.cpp
 
 $(OBJ)/lista.o: $(HEADERS) $(SRC)/lista.cpp
 	$(CC) $(CFLAGS) -o $(OBJ)/lista.o $(SRC)/lista.cpp
