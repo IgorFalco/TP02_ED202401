@@ -11,17 +11,17 @@ SRC = src
 OBJ = obj
 INC = include
 BIN = bin
-OBJS = $(OBJ)/tp02.o $(OBJ)/grafoLista.o $(OBJ)/lista.o $(OBJ)/grafo_matrix.o $(OBJ)/matrix.o
-HEADERS = $(INC)/grafoLista.hpp $(INC)/grafo_matrix.hpp $(INC)/lista.hpp $(INC)/matrix.hpp
+OBJS = $(OBJ)/tp2.o $(OBJ)/grafoLista.o $(OBJ)/lista.o $(OBJ)/grafo_matrix.o $(OBJ)/matrix.o $(OBJ)/priorityQueue.o
+HEADERS = $(INC)/grafoLista.hpp $(INC)/grafo_matrix.hpp $(INC)/lista.hpp $(INC)/matrix.hpp $(INC)/algoritmos.hpp $(INC)/priorityQueue.hpp
 CFLAGS = -Wall -c -g -I $(INC)
 
-EXE = $(BIN)/tp02$(EXE_EXT)
+EXE = $(BIN)/tp2$(EXE_EXT)
 
-$(BIN)/tp02$(EXE_EXT): $(OBJS)
-	$(CC) -o $(BIN)/tp02$(EXE_EXT) $(OBJS) $(LIBS)
+$(BIN)/tp2$(EXE_EXT): $(OBJS)
+	$(CC) -o $(BIN)/tp2$(EXE_EXT) $(OBJS) $(LIBS)
 
-$(OBJ)/tp02.o: $(HEADERS) $(SRC)/tp02.cpp
-	$(CC) $(CFLAGS) -o $(OBJ)/tp02.o $(SRC)/tp02.cpp
+$(OBJ)/tp2.o: $(HEADERS) $(SRC)/tp2.cpp
+	$(CC) $(CFLAGS) -o $(OBJ)/tp2.o $(SRC)/tp2.cpp
 
 $(OBJ)/grafoLista.o: $(HEADERS) $(SRC)/grafoLista.cpp
 	$(CC) $(CFLAGS) -o $(OBJ)/grafoLista.o $(SRC)/grafoLista.cpp
@@ -34,6 +34,9 @@ $(OBJ)/grafo_matrix.o: $(HEADERS) $(SRC)/grafo_matrix.cpp
 
 $(OBJ)/matrix.o: $(HEADERS) $(SRC)/matrix.cpp
 	$(CC) $(CFLAGS) -o $(OBJ)/matrix.o $(SRC)/matrix.cpp
+
+$(OBJ)/priorityQueue.o: $(HEADERS) $(SRC)/priorityQueue.cpp
+	$(CC) $(CFLAGS) -o $(OBJ)/priorityQueue.o $(SRC)/priorityQueue.cpp
 
 all: $(EXE)
  	

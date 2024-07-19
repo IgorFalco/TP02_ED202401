@@ -29,7 +29,7 @@ public:
     Lista *array;
     int numVertices;
     ListaAdjacencia(int n);
-    virtual ~ListaAdjacencia();
+    ~ListaAdjacencia();
 
     void adicionarAresta(int origem, int destino);
 };

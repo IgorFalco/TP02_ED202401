@@ -10,6 +10,16 @@ void grafoLista::adicionarAresta(int origem, int destino)
     vertices.adicionarAresta(origem, destino);
 }
 
+void grafoLista::adicionarPortal(int u, int v)
+{
+    portais.insert({u, v});
+}
+
+bool grafoLista::isPortal(int u, int v) const
+{
+    return portais.find({u, v}) != portais.end();
+}
+
 void grafoLista::imprimir() const
 {
     for (int i = 0; i < vertices.numVertices; ++i)
@@ -23,4 +33,18 @@ void grafoLista::imprimir() const
         }
         std::cout << std::endl;
     }
+}
+
+int grafoLista::getNumVertices()
+{
+    return vertices.numVertices;
+}
+
+Celula *grafoLista::getAdjacencias(int vertice)
+{
+    if (vertice >= 0 && vertice < getNumVertices())
+    {
+        return vertices.array[vertice].cabeca;
+    }
+    return nullptr; // Retorna nullptr se o vértice estiver fora do intervalo
 }

@@ -8,7 +8,7 @@
             "name": "Depurar",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/bin/tp02.out",
+            "program": "${workspaceFolder}/bin/tp2.out",
             "args": [],
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}",
