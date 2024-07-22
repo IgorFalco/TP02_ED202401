@@ -1,9 +1,8 @@
 #include <iostream>
-#include <vector>
-#include <utility>
 #include "lista.hpp"
 #include "grafoLista.hpp"
 #include "algoritmos.hpp"
+#include "auxiliar.hpp"
 
 int main()
 {
@@ -12,13 +11,14 @@ int main()
 
     grafoLista grafo(numVertices);
 
-    // Ler as coordenadas dos vértices
-    std::vector<std::pair<double, double>> coordenadas(numVertices);
+    Coordenada* coordenadas = new Coordenada[numVertices];
+
     for (int i = 0; i < numVertices; ++i)
     {
         double x, y;
         std::cin >> x >> y;
-        coordenadas[i] = std::make_pair(x, y);
+        coordenadas[i].x = x;
+        coordenadas[i].y = y;
     }
 
     // Ler as arestas
@@ -44,14 +44,15 @@ int main()
     std::cin >> energia >> limitePortais;
 
     // Vetor para armazenar os predecessores
-    std::vector<int> pred;
-    std::vector<int> predstar;
+    int *pred = new int[numVertices];
+    int *predstar = new int[numVertices];
+    int tamanhoCaminho;
 
-    std::vector<double> dist = dijkstra(grafo, 0, pred, coordenadas, limitePortais);
-    std::vector<int> caminho = reconstruirCaminho(pred, numVertices - 1);
-    double distanciaTotalDijkstra = calcularDistanciaTotal(caminho, coordenadas, grafo);
+    double *dist = dijkstraLista(grafo, 0, pred, coordenadas, limitePortais);
+    int *caminho = reconstruirCaminho(pred, numVertices - 1, tamanhoCaminho);
+    double distanciaTotalDijkstra = calcularDistanciaTotalLista(caminho, coordenadas, grafo, tamanhoCaminho);
 
-    dist = aStar(grafo, 0, numVertices - 1, predstar, coordenadas, limitePortais);
+    dist = aStarLista(grafo, 0, numVertices - 1, predstar, coordenadas, limitePortais);
     double distanciaTotalEstrela = dist[numVertices - 1];
 
     // Verifica se a distância total é menor ou igual à energia disponível
@@ -73,14 +74,8 @@ int main()
         std::cout << 0;
     }
 
-    // grafo.imprimir();
-
-    // std::cout << "Caminho: ";
-    // for (int v : caminho)
-    // {
-    //     std::cout << v << " ";
-    // }
-    // std::cout << std::endl;
+    delete[] pred;
+    delete[] dist;
 
     return 0;
 }

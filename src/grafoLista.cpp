@@ -1,9 +1,27 @@
 #include "grafoLista.hpp"
 #include <iostream>
 
-grafoLista::grafoLista(int v) : vertices(v) {}
+grafoLista::grafoLista(int v) : vertices(v)
+{
+    portais = new bool *[vertices.numVertices];
+    for (int i = 0; i < vertices.numVertices; i++)
+    {
+        portais[i] = new bool[vertices.numVertices];
+        for (int j = 0; j < vertices.numVertices; ++j)
+        {
+            portais[i][j] = false;
+        }
+    }
+}
 
-grafoLista::~grafoLista() {}
+grafoLista::~grafoLista()
+{
+    for (int i = 0; i < vertices.numVertices; ++i)
+    {
+        delete[] portais[i];
+    }
+    delete[] portais;
+}
 
 void grafoLista::adicionarAresta(int origem, int destino)
 {
@@ -12,12 +30,19 @@ void grafoLista::adicionarAresta(int origem, int destino)
 
 void grafoLista::adicionarPortal(int u, int v)
 {
-    portais.insert({u, v});
+    if (u >= 0 && u < vertices.numVertices && v >= 0 && v < vertices.numVertices)
+    {
+        portais[u][v] = true;
+    }
 }
 
 bool grafoLista::isPortal(int u, int v) const
 {
-    return portais.find({u, v}) != portais.end();
+    if (u >= 0 && u < vertices.numVertices && v >= 0 && v < vertices.numVertices)
+    {
+        return portais[u][v];
+    }
+    return false;
 }
 
 void grafoLista::imprimir() const

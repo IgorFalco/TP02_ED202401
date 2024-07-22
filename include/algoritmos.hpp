@@ -1,66 +1,26 @@
 #pragma once
 
 #include <iostream>
-#include <vector>
-#include <cmath>
 #include <limits>
-#include <functional>
-#include <algorithm>
 #include "grafoLista.hpp"
 #include "priorityQueue.hpp"
+#include "auxiliar.hpp"
 
 // Definindo um valor infinito para a distância
 const double INF = std::numeric_limits<double>::infinity();
 
-double calcularDistancia(double x1, double y1, double x2, double y2)
-{
-    return std::sqrt(std::pow(x2 - x1, 2) + std::pow(y2 - y1, 2));
-}
-
-double calcularDistanciaTotal(const std::vector<int> &caminho, const std::vector<std::pair<double, double>> &coordenadas, grafoLista &grafo)
-{
-    double distanciaTotal = 0.0;
-    for (size_t i = 0; i < caminho.size() - 1; ++i)
-    {
-        int u = caminho[i];
-        int v = caminho[i + 1];
-
-        if (grafo.isPortal(u, v))
-        {
-            // Se a aresta é um portal, a distância é 0
-            distanciaTotal += 0.0;
-        }
-        else
-        {
-            // Calcula a distância euclidiana
-            double x1 = coordenadas[u].first;
-            double y1 = coordenadas[u].second;
-            double x2 = coordenadas[v].first;
-            double y2 = coordenadas[v].second;
-            distanciaTotal += calcularDistancia(x1, y1, x2, y2);
-        }
-    }
-    return distanciaTotal;
-}
-
-// Função para reconstruir o caminho a partir dos predecessores
-std::vector<int> reconstruirCaminho(const std::vector<int> &pred, int destino)
-{
-    std::vector<int> caminho;
-    for (int v = destino; v != -1; v = pred[v])
-    {
-        caminho.push_back(v);
-    }
-    std::reverse(caminho.begin(), caminho.end());
-    return caminho;
-}
-
 // Função para calcular o menor caminho usando o algoritmo de Dijkstra
-std::vector<double> dijkstra(grafoLista &grafo, int origem, std::vector<int> &pred, const std::vector<std::pair<double, double>> &coordenadas, int limitePortais)
+double *dijkstraLista(grafoLista &grafo, int origem, int *pred, Coordenada *coordenadas, int limitePortais)
 {
     int n = grafo.getNumVertices();
-    std::vector<double> dist(n, INF); // Distâncias iniciais são infinitas
-    pred.assign(n, -1);               // Predecessores para reconstruir o caminho
+    double *dist = new double[n];
+
+    for (int i = 0; i < n; ++i)
+    {
+        dist[i] = INF; // Distâncias iniciais são infinitas
+        pred[i] = -1;
+    }
+
     PriorityQueue pq(n);
 
     // Inicializar o ponto de origem
@@ -92,8 +52,8 @@ std::vector<double> dijkstra(grafoLista &grafo, int origem, std::vector<int> &pr
             }
             else
             {
-                peso = calcularDistancia(coordenadas[u].first, coordenadas[u].second,
-                                         coordenadas[v].first, coordenadas[v].second);
+                peso = calcularDistancia(coordenadas[u].x, coordenadas[u].y,
+                                         coordenadas[v].x, coordenadas[v].y);
             }
 
             int novos_portais_usados = portais_usados + (grafo.isPortal(u, v) ? 1 : 0);
@@ -120,11 +80,16 @@ std::vector<double> dijkstra(grafoLista &grafo, int origem, std::vector<int> &pr
 }
 
 // Função para calcular o menor caminho usando o algoritmo A*
-std::vector<double> aStar(grafoLista &grafo, int origem, int destino, std::vector<int> &pred, const std::vector<std::pair<double, double>> &coordenadas, int limitePortais)
+double *aStarLista(grafoLista &grafo, int origem, int destino, int *pred, Coordenada *coordenadas, int limitePortais)
 {
     int n = grafo.getNumVertices();
-    std::vector<double> dist(n, INF); // Distâncias iniciais são infinitas
-    pred.assign(n, -1);               // Predecessores para reconstruir o caminho
+
+    double *dist = new double[n];
+    for (int i = 0; i < n; ++i)
+    {
+        dist[i] = INF; // Distâncias iniciais são infinitas
+        pred[i] = -1;
+    }
     PriorityQueue pq(n);
 
     // Inicializar o ponto de origem
@@ -137,10 +102,11 @@ std::vector<double> aStar(grafoLista &grafo, int origem, int destino, std::vecto
         double d = top.priority;
         int u = top.index;
         int portais_usados = top.portais_usados;
+
         pq.pop();
 
         // Se a distância atual for maior que a distância conhecida ou os portais usados forem maiores que o permitido, ignore
-        if (dist[u] < d - calcularDistancia(coordenadas[u].first, coordenadas[u].second, coordenadas[destino].first, coordenadas[destino].second) || portais_usados > limitePortais)
+        if (dist[u] < d - calcularDistancia(coordenadas[u].x, coordenadas[u].y, coordenadas[destino].x, coordenadas[destino].y) || portais_usados > limitePortais)
             continue;
 
         // Se chegamos ao destino, termine a busca
@@ -160,8 +126,8 @@ std::vector<double> aStar(grafoLista &grafo, int origem, int destino, std::vecto
             }
             else
             {
-                peso = calcularDistancia(coordenadas[u].first, coordenadas[u].second,
-                                         coordenadas[v].first, coordenadas[v].second);
+                peso = calcularDistancia(coordenadas[u].x, coordenadas[u].y,
+                                         coordenadas[v].x, coordenadas[v].y);
             }
 
             int novos_portais_usados = portais_usados + (grafo.isPortal(u, v) ? 1 : 0);
@@ -175,8 +141,9 @@ std::vector<double> aStar(grafoLista &grafo, int origem, int destino, std::vecto
 
             // Cálculo da distância total e heurística
             double nova_distancia = dist[u] + peso;
-            double heuristica = calcularDistancia(coordenadas[v].first, coordenadas[v].second,
-                                                  coordenadas[destino].first, coordenadas[destino].second);
+            double heuristica = calcularDistancia(coordenadas[v].x, coordenadas[v].y,
+                                                  coordenadas[destino].x, coordenadas[destino].y);
+
             double prioridade = nova_distancia + heuristica;
 
             // Relaxamento da aresta
