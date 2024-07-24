@@ -16,5 +16,5 @@ public:
     void imprimir() const;
     int getNumVertices();
     Celula *getAdjacencias(int vertice);
-    bool isPortal(int u, int v) const; // Verifica se uma aresta é um portal
+    bool isPortal(int u, int v) const;
 };

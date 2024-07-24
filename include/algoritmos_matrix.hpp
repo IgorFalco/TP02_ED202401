@@ -74,7 +74,7 @@ double *dijkstraMatriz(grafoMatriz &grafo, int origem, int *pred, Coordenada *co
     return dist;
 }
 
-double *aStarMatriz(grafoMatriz &grafo, int origem, int destino, int *pred, Coordenada *coordenadas, int limitePortais)
+double *aStarMatriz(grafoMatriz &grafo, int origem, int destino, Coordenada *coordenadas, int limitePortais)
 {
     int n = grafo.getNumVertices();
     double *dist = new double[n];
@@ -82,7 +82,6 @@ double *aStarMatriz(grafoMatriz &grafo, int origem, int destino, int *pred, Coor
     for (int i = 0; i < n; ++i)
     {
         dist[i] = INF; // Distâncias iniciais são infinitas
-        pred[i] = -1;
     }
     PriorityQueue pq(n);
 
@@ -140,7 +139,6 @@ double *aStarMatriz(grafoMatriz &grafo, int origem, int destino, int *pred, Coor
                 if (nova_distancia < dist[v])
                 {
                     dist[v] = nova_distancia;
-                    pred[v] = u;
                     pq.push(prioridade, v, novos_portais_usados);
                 }
             }

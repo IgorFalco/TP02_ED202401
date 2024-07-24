@@ -80,7 +80,7 @@ double *dijkstraLista(grafoLista &grafo, int origem, int *pred, Coordenada *coor
 }
 
 // Função para calcular o menor caminho usando o algoritmo A*
-double *aStarLista(grafoLista &grafo, int origem, int destino, int *pred, Coordenada *coordenadas, int limitePortais)
+double *aStarLista(grafoLista &grafo, int origem, int destino, Coordenada *coordenadas, int limitePortais)
 {
     int n = grafo.getNumVertices();
 
@@ -88,7 +88,6 @@ double *aStarLista(grafoLista &grafo, int origem, int destino, int *pred, Coorde
     for (int i = 0; i < n; ++i)
     {
         dist[i] = INF; // Distâncias iniciais são infinitas
-        pred[i] = -1;
     }
     PriorityQueue pq(n);
 
@@ -150,7 +149,6 @@ double *aStarLista(grafoLista &grafo, int origem, int destino, int *pred, Coorde
             if (nova_distancia < dist[v])
             {
                 dist[v] = nova_distancia;
-                pred[v] = u;
                 pq.push(prioridade, v, novos_portais_usados);
             }
 

@@ -3,8 +3,8 @@
 class grafoMatriz
 {
 private:
-    bool **matriz;      // Matriz de adjacência para as arestas
-    bool **portais;     // Matriz de adjacência para os portais
+    bool **matriz;  
+    bool **portais;
     int numVertices;
 
 public:
@@ -14,7 +14,7 @@ public:
     void adicionarPortal(int u, int v);
     void imprimir() const;
     int getNumVertices() const;
-    bool isPortal(int u, int v) const; // Verifica se uma aresta é um portal
+    bool isPortal(int u, int v) const;
     bool existeAresta(int origem, int destino) const;
 };
 
